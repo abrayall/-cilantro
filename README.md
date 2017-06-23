@@ -9,6 +9,8 @@ Cilantro is a Java framework for building sweet command line interfaces (CLI).
  - Console (used to interact with console)
    - print
    - println
+   - printf (with color support?)
+   - readln, readXXX
  
  - ColoredConsole (used to interact with console in color :-) )
     - color(name|hex|rgb)
