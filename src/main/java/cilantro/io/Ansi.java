@@ -1,4 +1,4 @@
-package cilantro;
+package cilantro.io;
 
 import javax.lang.Strings;
 import javax.lang.Try;

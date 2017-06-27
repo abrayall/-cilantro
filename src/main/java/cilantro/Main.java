@@ -1,29 +1,34 @@
 package cilantro;
 
+import javax.lang.System;
 import javax.util.List;
 import javax.util.Map;
 
-import javax.lang.System;
-import static javax.util.List.*;
-import static javax.util.Map.*;
+import cilantro.cli.Parser;
+import cilantro.io.Console;
 
 public class Main {
 	
 	protected Console console;
+	protected String[] arguments;
 	protected List<String> parameters;
 	protected Map<String, String> options;
 	
-	public Main() {
-		this(list(), map());
-	}
+	protected Parser parser = new Parser();
 	
-	public Main(List<String> parameters, Map<String, String> options) {
-		this.parameters = parameters;
-		this.options = options;
+	public Main initialize(String[] arguments) {
+		this.arguments = arguments;
+		this.parameters = parser.parameters(arguments);
+		this.options = parser.options(arguments);
 		this.console = new Console(System.out, System.err, System.in).install();
+		return this;
 	}
 	
 	public Integer execute() throws Exception {
+		return this.execute(this.parameters, this.options);
+	}
+	
+	public Integer execute(List<String> parameters, Map<String, String> options) {
 		this.console.info("Please implement me!");
 		return 1;
 	}
@@ -33,6 +38,6 @@ public class Main {
 	}
 	
 	public static void main(Class<?> clazz, String[] arguments) throws Exception {
-		System.exit(Main.class.cast(clazz.newInstance()).execute());
+		System.exit(Main.class.cast(clazz.newInstance()).initialize(arguments).execute());
 	}
 }
