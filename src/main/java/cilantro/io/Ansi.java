@@ -65,6 +65,14 @@ public class Ansi {
     	public String toString(boolean background) {
     		return this.toString(this.number + (background ? 10 : 0));
     	}
+    	
+    	public Color darker() {
+    		return new Color(this.number - 60);
+    	}
+    	
+    	public Color lighter() {
+    		return new Color(this.number + 60);
+    	}
     }
     
     public static class Formatting extends Command {
@@ -92,7 +100,15 @@ public class Ansi {
     }
     
     public static Color color(String name) {
-    	return (Color) command(name);
+    	return color(name, "normal");
+    }
+    
+    public static Color color(String name, String shade) {
+    	Color color = (Color)command(name);
+    	if (shade.equals("lighter"))
+    		return color.lighter();
+    	
+    	return color;
     }
     
     public static Color color(int number) {
