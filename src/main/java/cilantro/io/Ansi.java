@@ -9,6 +9,11 @@ public class Ansi {
 	
 	public static Color red   = red();
 	public static Color black = black();
+	public static Color green = green();
+	public static Color blue = blue();
+	public static Color yellow = yellow();
+	public static Color magenta = magenta();
+	public static Color cyan = cyan();
 	
 	public static Reset reset = new Reset();
 	
@@ -27,6 +32,18 @@ public class Ansi {
     	}
     	
     	public String toString() {
+    		return this.toString(this.number, this.category);
+    	}
+    	
+    	public String toString(Integer number) {
+    		return this.toString(number, this.category);
+    	}
+    	
+    	public String toString(String category) {
+    		return this.toString(this.number, category);
+    	}
+    	
+    	public String toString(Integer number, String category) {
     		return Strings.format("\u001b[${0}${1}", number, category);
     	}
     }
@@ -34,6 +51,10 @@ public class Ansi {
     public static class Color extends Command {
     	protected Color(int number) {
     		super("m", number);
+    	}
+    	
+    	public String toString(boolean background) {
+    		return this.toString(this.number + (background ? 10 : 0));
     	}
     }
     
@@ -91,7 +112,7 @@ public class Ansi {
     	return Strings.format("${foreground}${background}${text}${reset}", map(
     		entry("text", text),
     		entry("foreground", foreground != null ? foreground.toString() : ""),
-    		entry("background", background != null ? background.toString() : ""),
+    		entry("background", background != null ? background.toString(true) : ""),
     		entry("reset", reset)
     	));
     }
