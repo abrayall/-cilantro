@@ -58,12 +58,13 @@ public class Ansi {
     }
     
     public static class Color extends Command {
+    	
     	protected Color(int number) {
     		super("m", number);
     	}
     	
     	public String toString(boolean background) {
-    		return this.toString(this.number + (background ? 10 : 0));
+   			return this.toString(this.number + (background ? 10 : 0));
     	}
     	
     	public Color darker() {
@@ -72,6 +73,16 @@ public class Ansi {
     	
     	public Color lighter() {
     		return new Color(this.number + 60);
+    	}
+    }
+    
+    public static class AdvancedColor extends Color {
+    	protected AdvancedColor(int number) {
+			super(number);
+		}
+
+		public String toString(boolean background) {
+    		return Strings.format("\u001b[${0};5${1}%{2}", background ? 48 : 38, number, category);
     	}
     }
     
@@ -113,6 +124,10 @@ public class Ansi {
     
     public static Color color(int number) {
     	return new Color(number);
+    }
+    
+    public static Color color(int number, boolean advanced) {
+    	return advanced ? new AdvancedColor(number) : new Color(number);
     }
     
     public static Color black() {
