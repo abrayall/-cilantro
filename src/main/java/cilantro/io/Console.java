@@ -34,6 +34,7 @@ public class Console {
 		
 		this.colors = Integer.parseInt(this.detect("colors", "0"));
 		this.functions = map(
+			entry("format",		parameters -> this.colors < 8 ? parameters.get(0, "") : Ansi.format(parameters.get(0, ""), Ansi.commands(parameters))),
 			entry("color", 		parameters -> this.colors < 8 ? parameters.get(0, "") : Ansi.format(parameters.get(0, ""), Ansi.color(parameters.get(1, "")), Ansi.color(parameters.get(2, "")))),
 			entry("foreground", parameters -> this.colors < 8 ? parameters.get(0, "") : Ansi.format(parameters.get(0, ""), Ansi.color(parameters.get(1, "")))),
 			entry("background", parameters -> this.colors < 8 ? parameters.get(0, "") : Ansi.format(parameters.get(0, ""), null, Ansi.color(parameters.get(1, "")))),
@@ -43,7 +44,13 @@ public class Console {
 			entry("blue", 		parameters -> this.colors < 8 ? parameters.get(0, "") : Ansi.format(parameters.get(0, ""), Ansi.blue)),
 			entry("yellow", 	parameters -> this.colors < 8 ? parameters.get(0, "") : Ansi.format(parameters.get(0, ""), Ansi.yellow)),
 			entry("magenta", 	parameters -> this.colors < 8 ? parameters.get(0, "") : Ansi.format(parameters.get(0, ""), Ansi.magenta)),
-			entry("cyan", 		parameters -> this.colors < 8 ? parameters.get(0, "") : Ansi.format(parameters.get(0, ""), Ansi.cyan))
+			entry("cyan", 		parameters -> this.colors < 8 ? parameters.get(0, "") : Ansi.format(parameters.get(0, ""), Ansi.cyan)),
+			entry("bold", 		parameters -> this.colors < 8 ? parameters.get(0, "") : Ansi.format(parameters.get(0, ""), Ansi.bold)),
+			entry("dim", 		parameters -> this.colors < 8 ? parameters.get(0, "") : Ansi.format(parameters.get(0, ""), Ansi.dim)),
+			entry("underline",  parameters -> this.colors < 8 ? parameters.get(0, "") : Ansi.format(parameters.get(0, ""), Ansi.underline)),
+			entry("blink", 		parameters -> this.colors < 8 ? parameters.get(0, "") : Ansi.format(parameters.get(0, ""), Ansi.blink)),
+			entry("reverse",	parameters -> this.colors < 8 ? parameters.get(0, "") : Ansi.format(parameters.get(0, ""), Ansi.reverse)),
+			entry("hidden", 	parameters -> this.colors < 8 ? parameters.get(0, "") : Ansi.format(parameters.get(0, ""), Ansi.hidden))
 		);
 	}
 	
@@ -159,7 +166,8 @@ public class Console {
     }
 	
 	public static void main(String[] arguments) throws Exception {
-		Console console = new Console();
+		Console console = new Console().colors(256);
 		console.printlnf("${blue(Magnum v1.0.0)}");
+		console.printlnf("${format(Magnum v1.0.0, blue, bold)}");
 	}
 }

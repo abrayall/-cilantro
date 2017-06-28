@@ -1,9 +1,10 @@
 package cilantro.io;
 
+import static javax.util.Map.*;
+
 import javax.lang.Strings;
 import javax.lang.Try;
-
-import static javax.util.Map.*;
+import javax.util.List;
 
 public class Ansi {
 	
@@ -14,6 +15,14 @@ public class Ansi {
 	public static Color yellow = yellow();
 	public static Color magenta = magenta();
 	public static Color cyan = cyan();
+	public static Color white = white();
+	
+	public static Formatting bold = bold();
+	public static Formatting dim = dim();
+	public static Formatting underline = underline();
+	public static Formatting blink = blink();
+	public static Formatting reverse = reverse();
+	public static Formatting hidden = hidden();
 	
 	public static Reset reset = new Reset();
 	
@@ -58,14 +67,32 @@ public class Ansi {
     	}
     }
     
+    public static class Formatting extends Command {
+    	protected Formatting(int number) {
+    		super("m", number);
+    	}
+    }
+    
     public static class Reset extends Command {
     	protected Reset() {
     		super("m", 0);
     	}
     }
     
+    public static Command command(String name) {
+    	return Try.attempt(() -> (Command) Ansi.class.getMethod(name).invoke(null), (Command)null); 
+    }
+    
+    public static List<Command> commands(String... names) {
+    	return commands(List.list(names));
+    }
+    
+    public static List<Command> commands(List<String> names) {
+    	return names.map(name -> Try.attempt(() -> command(name))).filter(command -> command != null);
+    }
+    
     public static Color color(String name) {
-    	return Try.attempt(() -> (Color) Ansi.class.getMethod(name).invoke(null), (Color)null);
+    	return (Color) command(name);
     }
     
     public static Color color(int number) {
@@ -104,20 +131,65 @@ public class Ansi {
     	return color(37);
     }
     
+    public static Formatting formatting(String name) {
+    	return (Formatting) command(name);
+    }
+    
+    public static Formatting formatting(int number) {
+    	return new Formatting(number);
+    }
+    
+    public static Formatting bold() {
+    	return formatting(1);
+    }
+    
+    public static Formatting dim() {
+    	return formatting(2);
+    }
+    
+    public static Formatting underline() {
+    	return formatting(5);
+    }
+    
+    public static Formatting blink() {
+    	return formatting(5);
+    }
+    
+    public static Formatting reverse() {
+    	return formatting(7);
+    }
+    
+    public static Formatting hidden() {
+    	return formatting(8);
+    }
+    
+    public static String format(String text, String... formatting) {
+    	return format(text, commands(formatting));
+    }
+    
+    public static String format(String text, Command... commands) {
+    	return format(text, commands);
+    }
+    
+    public static String format(String text, java.util.List<Command> commands) {
+    	return Strings.format("${formatting}${text}${reset}", map(
+    		entry("text", text),
+    		entry("formatting", List.list(commands).map(command -> command.toString()).join("")),
+    		entry("reset", reset)
+        ));
+    }
+    
     public static String format(String text, Color foreground) {
     	return format(text, foreground, null);
     }
     
-    public static String format(String text, Color foreground, Color background) {  
-    	return Strings.format("${foreground}${background}${text}${reset}", map(
+    public static String format(String text, Color foreground, Color background, Formatting... formatting) {  
+    	return Strings.format("${foreground}${background}${formatting}${text}${reset}", map(
     		entry("text", text),
     		entry("foreground", foreground != null ? foreground.toString() : ""),
     		entry("background", background != null ? background.toString(true) : ""),
+    		entry("formatting", List.list(formatting).map(format -> format.toString()).join("")),
     		entry("reset", reset)
     	));
-    }
-    
-    public static void main(String[] arguments) throws Exception {
-    	System.out.println(format("HelloWord", color("black"), color("red")));
     }
 }
