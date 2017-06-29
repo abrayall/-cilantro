@@ -167,7 +167,12 @@ public class Console {
 	
 	public static void main(String[] arguments) throws Exception {
 		Console console = new Console().colors(256);
-		console.printlnf("${blue(Magnum v1.0.0)}");
-		console.printlnf("${format(Magnum v1.0.0, blue, bold)}");
+		console.printlnf("${blue(blue)}");
+		console.printlnf("${format(should be blue and bold, blue, bold)}");
+		console.printlnf("${color(green, 10)}");
+
+		for (int i = 1; i <= 255; i++) 
+			console.printlnf("${color(" + i + "," + i + ")}");
+		
 	}
 }

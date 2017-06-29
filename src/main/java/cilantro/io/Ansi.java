@@ -81,8 +81,12 @@ public class Ansi {
 			super(number);
 		}
 
+    	public String toString() {
+    		return this.toString(false);
+    	}
+    	
 		public String toString(boolean background) {
-    		return Strings.format("\u001b[${0};5${1}%{2}", background ? 48 : 38, number, category);
+    		return Strings.format("\u001b[${0};5;${1}${2}", background ? 48 : 38, number, category);
     	}
     }
     
@@ -111,6 +115,9 @@ public class Ansi {
     }
     
     public static Color color(String name) {
+    	if (Strings.isNumeric(name))
+    		return color(Integer.parseInt(name));
+    	
     	return color(name, "normal");
     }
     
@@ -123,7 +130,7 @@ public class Ansi {
     }
     
     public static Color color(int number) {
-    	return new Color(number);
+    	return color(number, true);
     }
     
     public static Color color(int number, boolean advanced) {
@@ -131,35 +138,35 @@ public class Ansi {
     }
     
     public static Color black() {
-    	return color(30);
+    	return color(30, false);
     }
     
     public static Color red() {
-    	return color(31);
+    	return color(31, false);
     }
     
     public static Color green() {
-    	return color(32);
+    	return color(32, false);
     }
     
     public static Color yellow() {
-    	return color(33);
+    	return color(33, false);
     }
     
     public static Color blue() {
-    	return color(34);
+    	return color(34, false);
     }
     
     public static Color magenta() {
-    	return color(35);
+    	return color(35, false);
     }
         
     public static Color cyan() {
-    	return color(36);
+    	return color(36, false);
     }
         
     public static Color white() {
-    	return color(37);
+    	return color(37, false);
     }
     
     public static Formatting formatting(String name) {
