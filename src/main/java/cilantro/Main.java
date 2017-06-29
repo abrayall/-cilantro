@@ -35,6 +35,10 @@ public class Main {
 		return this;
 	}
 	
+	public Main println() {
+		return println("");
+	}
+	
 	public Main println(String message, Object... parameters) {
 		return println(console.out, message, parameters);
 	}
@@ -48,7 +52,7 @@ public class Main {
 		return this.execute(this.parameters, this.options);
 	}
 	
-	public Integer execute(List<String> parameters, Map<String, String> options) {
+	public Integer execute(List<String> parameters, Map<String, String> options) throws Exception {
 		this.console.info("Please implement me!");
 		return 1;
 	}
