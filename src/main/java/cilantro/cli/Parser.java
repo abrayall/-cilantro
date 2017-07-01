@@ -49,6 +49,8 @@ public class Parser {
 		for (String argument : arguments) {
 			if (argument.startsWith("-") && argument.contains("="))
 				options.put(argument.split("=")[0].replaceAll("-", ""), argument.split("=")[1]);
+			else if (argument.startsWith("-"))
+				options.put(argument.replaceAll("-",  ""), "true");
 		}
 
 		return options;
