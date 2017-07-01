@@ -62,6 +62,8 @@ public class Main {
 	}
 	
 	public static void main(Class<?> clazz, String[] arguments) throws Exception {
-		System.exit(Main.class.cast(clazz.newInstance()).initialize(arguments).execute());
+		Integer result = Main.class.cast(clazz.newInstance()).initialize(arguments).execute();
+		if (result != null)
+			System.exit(result);
 	}
 }
