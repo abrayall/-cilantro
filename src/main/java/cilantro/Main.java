@@ -58,7 +58,7 @@ public class Main {
 	}
 	
 	public static void main(String[] arguments) throws Exception {
-		main(System.loadClass(System.getProperties().get("command").toString()), arguments);
+		main(System.loadClass(System.getProperties().get("main").toString()), arguments);
 	}
 	
 	public static void main(Class<?> clazz, String[] arguments) throws Exception {
