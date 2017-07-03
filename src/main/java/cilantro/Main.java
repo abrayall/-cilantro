@@ -18,10 +18,8 @@ public class Main {
 	
 	protected Parser parser = new Parser();
 	
-	public Main initialize(String[] arguments) {
-		this.arguments = arguments;
-		this.parameters = parser.parameters(arguments);
-		this.options = parser.options(arguments);
+	public Main initialize(Parser parser) {
+		this.parser = parser;
 		this.console = new Console(System.out, System.err, System.in).install();
 		return this;
 	}
@@ -49,7 +47,7 @@ public class Main {
 	}
 	
 	public Integer execute() throws Exception {
-		return this.execute(this.parameters, this.options);
+		return this.execute(this.parser.parameters(), this.parser.options());
 	}
 	
 	public Integer execute(List<String> parameters, Map<String, String> options) throws Exception {
@@ -62,7 +60,11 @@ public class Main {
 	}
 	
 	public static void main(Class<?> clazz, String[] arguments) throws Exception {
-		Integer result = Main.class.cast(clazz.newInstance()).initialize(arguments).execute();
+		main(clazz, new Parser(arguments));
+	}
+	
+	public static void main(Class<?> clazz, Parser parser) throws Exception {
+		Integer result = Main.class.cast(clazz.newInstance()).initialize(parser).execute();
 		if (result != null)
 			System.exit(result);
 	}
