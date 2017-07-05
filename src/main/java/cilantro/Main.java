@@ -53,7 +53,7 @@ public class Main {
 	}
 	
 	public Integer execute(List<String> parameters, Map<String, String> options) throws Exception {
-		this.console.info("Please implement me!");
+		console.println("Please implement me!");
 		return 1;
 	}
 	
@@ -62,7 +62,7 @@ public class Main {
 		if (clazz == null)
 			clazz = search(System.classpath());
 		
-		main(clazz, arguments);
+		main(clazz != null ? clazz : Main.class, arguments);
 	}
 	
 	public static void main(Class<?> clazz, String[] arguments) throws Exception {
@@ -82,6 +82,6 @@ public class Main {
 	public static Class<?> search(List<File> classpath) throws Exception {
 		return System.classloader(classpath).mains().map(clazz -> {
 			return clazz.getSuperclass() != null && clazz.getSuperclass().getName().equals(Main.class.getName()) ? clazz : (Class<?>) null;
-		}).filter(clazz -> clazz != null).first();
+		}).filter(clazz -> clazz != null).get(0, (Class<?>) null);
 	}
 }
