@@ -2,7 +2,9 @@ package cilantro;
 
 import java.io.PrintStream;
 
+import javax.io.File;
 import javax.lang.System;
+import javax.lang.Try;
 import javax.util.List;
 import javax.util.Map;
 
@@ -56,7 +58,11 @@ public class Main {
 	}
 	
 	public static void main(String[] arguments) throws Exception {
-		main(System.loadClass(System.getProperties().get("main").toString()), arguments);
+		Class<?> clazz = load(System.getProperties().getProperty("main", "").toString());
+		if (clazz == null)
+			clazz = search(System.classpath());
+		
+		main(clazz, arguments);
 	}
 	
 	public static void main(Class<?> clazz, String[] arguments) throws Exception {
@@ -67,5 +73,15 @@ public class Main {
 		Integer result = Main.class.cast(clazz.newInstance()).initialize(parser).execute();
 		if (result != null)
 			System.exit(result);
+	}
+	
+	public static Class<?> load(String name) {
+		return Try.attempt(() -> System.loadClass(name), (Class<?>) null);
+	}
+	
+	public static Class<?> search(List<File> classpath) throws Exception {
+		return System.classloader(classpath).mains().map(clazz -> {
+			return clazz.getSuperclass() != null && clazz.getSuperclass().getName().equals(Main.class.getName()) ? clazz : (Class<?>) null;
+		}).filter(clazz -> clazz != null).first();
 	}
 }
