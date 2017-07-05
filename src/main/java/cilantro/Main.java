@@ -53,7 +53,7 @@ public class Main {
 	}
 	
 	public Integer execute(List<String> parameters, Map<String, String> options) throws Exception {
-		console.println("Please implement me!");
+		console.log("info", "Please implement me!");
 		return 1;
 	}
 	

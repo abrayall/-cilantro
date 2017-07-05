@@ -150,11 +150,11 @@ public class Console {
 	}
 	
 	public String format(String source, Object... parameters) {
-		return Strings.format(source, functions, parameters);
+		return Strings.process(source, functions, List.list(parameters));
 	}
 	
 	public String format(String source, java.util.Map<String, Object> parameters) {
-		return Strings.format(source, functions, parameters);
+		return Strings.process(source, functions, Map.map(parameters));
 	}
 	
     public static String format(String text, Color foreground) {
