@@ -3,6 +3,7 @@ package cilantro;
 import java.io.PrintStream;
 
 import javax.io.File;
+import javax.lang.Classloader;
 import javax.lang.System;
 import javax.lang.Try;
 import javax.util.List;
@@ -57,10 +58,26 @@ public class Main {
 		return 1;
 	}
 	
+	public static Class<?> load(String name) {
+		return load(name, System.classloader());
+	}
+	
+	public static Class<?> load(String name, ClassLoader classloader) {
+		return Try.attempt(() -> classloader.loadClass(name), (Class<?>) null);
+	}
+	
+	public static Class<?> search(List<File> classpath) throws Exception {
+		return System.classloader(classpath).mains().map(clazz -> {
+			return clazz.getSuperclass() != null && clazz.getSuperclass().getName().equals(Main.class.getName()) ? clazz : (Class<?>) null;
+		}).filter(clazz -> clazz != null).get(0, (Class<?>) null);
+	}
+	
 	public static void main(String[] arguments) throws Exception {
-		Class<?> clazz = load(System.getProperties().getProperty("main", "").toString());
+		List<File> classpath = Classloader.classpath(System.getProperty("classpath", System.getProperty("java.class.path")));
+		Classloader classloader = Classloader.classloader(classpath);
+		Class<?> clazz = load(System.getProperty("main"), classloader);
 		if (clazz == null)
-			clazz = search(System.classpath());
+			clazz = search(classpath);
 		
 		main(clazz != null ? clazz : Main.class, arguments);
 	}
@@ -73,15 +90,5 @@ public class Main {
 		Integer result = Main.class.cast(clazz.newInstance()).initialize(parser).execute();
 		if (result != null)
 			System.exit(result);
-	}
-	
-	public static Class<?> load(String name) {
-		return Try.attempt(() -> System.loadClass(name), (Class<?>) null);
-	}
-	
-	public static Class<?> search(List<File> classpath) throws Exception {
-		return System.classloader(classpath).mains().map(clazz -> {
-			return clazz.getSuperclass() != null && clazz.getSuperclass().getName().equals(Main.class.getName()) ? clazz : (Class<?>) null;
-		}).filter(clazz -> clazz != null).get(0, (Class<?>) null);
 	}
 }

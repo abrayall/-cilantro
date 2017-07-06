@@ -8,6 +8,22 @@
  
 	<name>Cilantro Java CLI Framework</name>
  
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+				    	<manifest>
+							<mainClass>cilantro.Main</mainClass>
+				    	</manifest>
+				 	</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+  	
   	<dependencies>
 	  	<dependency>
 		    <groupId>io.github.rameses</groupId>
