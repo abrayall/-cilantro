@@ -46,14 +46,27 @@ public class Parser {
 	
 	public Map<String, String> options(String[] arguments) {
 		Map<String, String> options = map();
-		for (String argument : arguments) {
-			if (argument.startsWith("-") && argument.contains("="))
-				options.put(argument.split("=")[0].replaceAll("-", ""), argument.split("=")[1]);
-			else if (argument.startsWith("-"))
-				options.put(argument.replaceAll("-",  ""), "true");
-		}
+		for (String argument : arguments)
+			if (argument.startsWith("-"))
+				put(options, argument);
 
 		return options;
+	}
+	
+	protected Map<String, String> put(Map<String, String> map, String value) {
+		return (value.contains("=")) ? put(map, value.split("=")) : put(map, value, "true");			
+	}
+	
+	protected Map<String, String> put(Map<String, String> map, String[] pair) {
+		return put(map, pair[0], pair[1]);
+	}
+	
+	protected Map<String, String> put(Map<String, String> map, String key, String value) {
+		key = key.replace("-", "");
+		if (map.containsKey(key))
+			value = map.get(key) + "," + value;
+		
+		return map.set(key, value);
 	}
 }
 

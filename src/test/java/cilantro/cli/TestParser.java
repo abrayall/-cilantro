@@ -26,6 +26,12 @@ public class TestParser {
 		Assert.equals("test", parser.options(new String[] { "--test=yes", "foo", "bar", "-bar=test" }).get("bar"));
 		Assert.equals("2", parser.options(new String[] { "--test=3", "foo", "bar", "--bar=2", "-foobar=1" }).get("bar"));
 		Assert.equals("1", parser.options(new String[] { "--test=3", "foo", "bar", "--bar=2", "-foobar=1" }).get("foobar"));
+		
+		Assert.equals("foo", parser.parameters(new String[] { "--test=test", "--foo", "--bar=3", "foo", "bar", "--bar=2", "-bar=1" }).get(0));
+		Assert.equals("bar", parser.parameters(new String[] { "--test=test", "--foo", "--bar=3", "foo", "bar", "--bar=2", "-bar=1" }).get(1));
+		Assert.equals("true", parser.options(new String[] { "--test=test", "--foo", "--bar=3", "foo", "bar", "--bar=2", "-bar=1" }).get("foo"));
+		Assert.equals("test", parser.options(new String[] { "--test=test", "--foo", "--bar=3", "foo", "bar", "--bar=2", "-bar=1" }).get("test"));
+		Assert.equals("3,2,1", parser.options(new String[] { "--test=test", "--foo", "--bar=3", "foo", "bar", "--bar=2", "-bar=1" }).get("bar"));
 	}
 	
 	public static void main(String[] arguments) throws Exception {
