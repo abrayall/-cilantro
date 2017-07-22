@@ -4,6 +4,7 @@ import java.io.PrintStream;
 
 import javax.io.File;
 import javax.lang.Classloader;
+import javax.lang.Strings;
 import javax.lang.System;
 import javax.lang.Try;
 import javax.util.List;
@@ -47,6 +48,29 @@ public class Main {
 	public Main println(PrintStream stream, String message, Object... parameters) {
 		console.printlnf(stream, message, parameters);
 		return this;
+	}
+	
+	public Integer error(String message, Object... parameters) {
+		return error(-1, message, parameters);
+	}
+	
+	public Integer error(int code, String message, Object... parameters) {
+		console.printlnf("Error: ${0}", Strings.format(message, parameters));
+		return code;
+	}
+	
+	public Integer error(Throwable exception) {
+		return error(-1, exception);
+	}
+	
+	public Integer error(int code, Throwable exception) {
+		return error(code, exception, "Error: ${0}", exception.getMessage());
+	}
+	
+	public Integer error(int code, Throwable exception, String message, Object... parameters) {
+		console.printlnf(message, parameters);
+		exception.printStackTrace(console.out);
+		return code;
 	}
 	
 	public Integer execute() throws Exception {
