@@ -22,6 +22,18 @@ public class Main {
 	
 	protected Parser parser = new Parser();
 	
+	public String name() {
+		return "Cilantro";
+	}
+	
+	public String description() {
+		return "";
+	}
+	
+	public String version() {
+		return "";
+	}
+	
 	public Main initialize(Parser parser) {
 		this.parser = parser;
 		this.console = new Console(System.out, System.err, System.in).install();
@@ -71,6 +83,19 @@ public class Main {
 		console.printlnf(message, parameters);
 		exception.printStackTrace(console.out);
 		return code;
+	}
+	
+	public String header() {
+		StringBuffer buffer = new StringBuffer();
+		String header = this.name() + (this.description().equals("") ? "" : " - " + this.description()) + " " + (this.version().equals("") ? "" : "v" + this.version()).trim();
+		buffer.append(Strings.generate('-', header.length()) + "\n");
+		buffer.append(header  + "\n");
+		buffer.append(Strings.generate('-', header.length()) + "\n");
+		return buffer.toString();
+	}
+	
+	public void header(PrintStream stream) {
+		stream.print(this.header());
 	}
 	
 	public Integer execute() throws Exception {
