@@ -32,10 +32,10 @@ The CLI Parser supports parsing parameters and options.  Here are some examples:
 
 
 ```
-[/opt]$ tool bar1 bar2 bar3 -foo --bar --test=test --test2 foo bar4
+[/opt]$ tool bar1 bar2 bar3 -foo --bar --test=test -test2=test2 foo bar4
 ```
  - parameters = ["bar1", "bar2", "bar3", "bar4"]
- - options = {"foo": "true", "bar": "true", "test": "test", "test2": "foo"}
+ - options = {"foo": "true", "bar": "true", "test": "test", "test2": "test2"}
 
 
 
