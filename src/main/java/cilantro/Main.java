@@ -10,13 +10,14 @@ import javax.lang.Try;
 import javax.util.List;
 import javax.util.Map;
 
+import cilantro.cli.Arguments;
 import cilantro.cli.Parser;
 import cilantro.io.Console;
 
 public class Main {
 	
 	protected Console console;
-	protected String[] arguments;
+	protected Arguments arguments;
 	protected List<String> parameters;
 	protected Map<String, String> options;
 	
@@ -98,7 +99,11 @@ public class Main {
 		stream.print(this.header());
 	}
 	
-	public Integer execute() throws Exception {
+	public Integer execute(String[] arguments) throws Exception {
+		return this.execute(this.arguments = this.parser.parse(arguments));
+	}
+	
+	public Integer execute(Arguments arguments) throws Exception {
 		return this.execute(this.parser.parameters(), this.parser.options());
 	}
 	
@@ -132,11 +137,11 @@ public class Main {
 	}
 	
 	public static void main(Class<?> clazz, String[] arguments) throws Exception {
-		main(clazz, new Parser(arguments));
+		main(clazz, new Parser(), arguments);
 	}
 	
-	public static void main(Class<?> clazz, Parser parser) throws Exception {
-		Integer result = Main.class.cast(clazz.newInstance()).initialize(parser).execute();
+	public static void main(Class<?> clazz, Parser parser, String[] arguments) throws Exception {
+		Integer result = Main.class.cast(clazz.newInstance()).initialize(parser).execute(arguments);
 		if (result != null)
 			System.exit(result);
 	}
