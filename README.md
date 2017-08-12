@@ -47,8 +47,25 @@ The CLI Parser supports parsing parameters and options.  Here are some examples:
 
 
 ## CLI Framework
-Cilantro also provides an command line interface framework that can be used with parser or by itself.
+Cilantro also provides an command line interface framework that can be used with parser or by itself.  Just extend `cilantro.Main` and just be passed the already parsed arguments.
 
+```java
+import cilantro.Main;
+import cilantro.cli.Agruments;
+
+public Cli extends Main {
+   public Integer execute(Arguments arguments) {
+      System.out.println(arguments.parameters);
+      System.out.println(arguments.options);
+   }
+   
+   public static void main(String[] arguments) {
+       main(Cli.class, arguments)
+   }
+}
+```
+
+<br>
 
 ### Design Notes
  - Console (used to interact with console)
