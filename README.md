@@ -18,27 +18,32 @@ public static void main(String[] args) {
 ```
 
 The CLI Parser supports parsing parameters and options.  Here are some examples:
+
+##### All Parameters
 ```
 [/opt]$ tool foo bar test
 ```
  - parameters = ["foo", "bar", "test"]
  - options = {}
+<br>
 
+##### All options
 ```
-[/opt]$ tool -foo --bar --test=test --test2 foo
+[/opt]$ tool -foo --bar --test=test -test2=foo
 ```
  - parameters = []
  - options = {"foo": "true", "bar": "true", "test": "test", "test2": "foo"}
+<br>
 
 
+##### Mixed parameters and options
 ```
 [/opt]$ tool bar1 bar2 bar3 -foo --bar --test=test -test2=test2 foo bar4
 ```
  - parameters = ["bar1", "bar2", "bar3", "bar4"]
  - options = {"foo": "true", "bar": "true", "test": "test", "test2": "test2"}
 
-
-
+<br>
 
 
 ## CLI Framework
