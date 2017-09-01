@@ -104,7 +104,7 @@ public class Main {
 	}
 	
 	public Integer execute(Arguments arguments) throws Exception {
-		return this.execute(this.parser.parameters(), this.parser.options());
+		return this.execute(arguments.parameters, arguments.options);
 	}
 	
 	public Integer execute(List<String> parameters, Map<String, String> options) throws Exception {
