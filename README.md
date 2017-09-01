@@ -4,7 +4,7 @@
 Cilantro is a Java framework for building sweet command line interfaces (CLI).
 
 ## CLI Parser 
-Cilantro provides a "zero configuration" command line arguments parser.  That means all you have to do is give the parser the String[] arguments, and then you can easily access the parsed parameters and options.
+Cilantro provides a "zero configuration" command line arguments parser.  Just give the parser the `String[]` arguments from `main()`, and easily access the parsed parameters and options.
 
 ```java
 import cilantro.cli.Parser;
@@ -47,8 +47,25 @@ The CLI Parser supports parsing parameters and options.  Here are some examples:
 
 
 ## CLI Framework
-Cilantro also provides an command line interface framework that can be used with parser or by itself.
+Cilantro also provides an command line interface framework that makes it even easier to build your CLI.  Just extend `cilantro.Main` and implement your `execute(Arguments arguments)` method and be passed the already parse command line arguments.  There is also convenience methods to help hanlding printouts to the `Console`, including support for ansi coloring encoding.
 
+```java
+import cilantro.Main;
+import cilantro.cli.Agruments;
+
+public Cli extends Main {
+   public Integer execute(Arguments arguments) {
+      System.out.println(arguments.parameters);
+      System.out.println(arguments.options);
+   }
+   
+   public static void main(String[] arguments) {
+       main(Cli.class, arguments)
+   }
+}
+```
+
+<br>
 
 ### Design Notes
  - Console (used to interact with console)
